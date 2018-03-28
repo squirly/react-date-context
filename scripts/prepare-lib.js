@@ -26,6 +26,17 @@ fs.writeFile(
   },
 );
 
+fs.writeFile(
+    path.join(libPath, '.npmignore'),
+    '*.spec.*',
+    err => {
+        if (err) {
+            throw err;
+        }
+        console.log(`Wrote .npmignore`);
+    },
+);
+
 copy('README.md');
 copy('LICENSE');
 

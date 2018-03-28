@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {create, ReactTestRenderer} from 'react-test-renderer';
+import {create} from 'react-test-renderer';
 import {CurrentDate, RealDate} from './';
 
 describe('RealDate', () => {
@@ -21,7 +21,7 @@ describe('RealDate', () => {
       </RealDate>,
     );
 
-    expect(injectedDate && injectedDate.getTime()).toBeCloseTo(
+    expect(injectedDate === undefined ? 0 : injectedDate.getTime()).toBeCloseTo(
       new Date().getTime(),
       -2,
     );
@@ -68,8 +68,14 @@ describe('RealDate', () => {
     afterEach(jest.clearAllTimers);
     afterAll(jest.useRealTimers);
 
-    let date: Date;
-    const timeFactory = () => date;
+    let date: Date | undefined;
+    const timeFactory = () => {
+      if (date === undefined) {
+        throw new Error('date not set');
+      } else {
+        return date;
+      }
+    };
 
     beforeEach(() => {
       date = undefined;

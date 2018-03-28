@@ -14,9 +14,6 @@
   "include": [
     "./src/**/*"
   ],
-  "exclude": [
-    "./src/**/*.spec.*"
-  ],
   "awesomeTypescriptLoaderOptions": {
     "useCache": true,
     "useBabel": true

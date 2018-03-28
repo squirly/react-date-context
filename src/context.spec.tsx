@@ -51,11 +51,15 @@ describe('context', () => {
       const date = new Date(2017, 1, 1, 12, 0, 0, 0);
 
       const renderer = create(
-        <StaticDate value={date}>
+        <StaticDate date={date}>
           <CurrentDate>{injectDate}</CurrentDate>
         </StaticDate>,
       );
-      const instance = renderer.toTree().rendered.instance;
+      const tree = renderer.toTree();
+      if (tree === null || tree.rendered === null) {
+        throw new Error('Error building tree.');
+      }
+      const {instance} = tree.rendered;
       expect(instance.sub.list).toHaveLength(1);
       renderer.unmount();
       expect(instance.sub.list).toHaveLength(0);
@@ -77,15 +81,17 @@ describe('context', () => {
     });
 
     describe('with no parent', () => {
+      let spy: jest.SpyInstance<() => void>;
+
       beforeEach(() => {
-        jest.spyOn(console, 'error');
-        console.error.mockImplementation(() => {
+        spy = jest.spyOn(console, 'error');
+        spy.mockImplementation(() => {
           /**/
         });
       });
 
       afterEach(() => {
-        console.error.mockRestore();
+        spy.mockRestore();
       });
 
       it('throws an error', () => {
