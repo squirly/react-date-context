@@ -5,7 +5,8 @@
   "version": "0.0.1",
   "repository": "github:squirly/react-date-context",
   "license": "MIT",
-  "main": "./src/index.ts",
+  "main": "./lib/index.js",
+  "types": "./lib/index.d.ts",
   "peerDependencies": {
     "react": "~16",
     "prop-types": "~15"
