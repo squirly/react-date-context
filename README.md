@@ -53,9 +53,10 @@ submit PRs.
 
 To publish,
 
+*   `git checkout master && git pull --ff-only`; then
 *   bump the version with `npm version ...`; then
 *   run `git push --tags`; then
-*   publish to npm with `npm prepublish && npm publish lib`.
+*   publish to npm with `npm run publish`.
 
 ## License
 

@@ -3,13 +3,14 @@
   "description": "A set of React components for managing realtime UI updates that depend on the current time.",
   "version": "0.0.1",
   "scripts": {
+    "prepare": "npm run build",
     "prebuild": "rm -rf ./lib",
     "build": "tsc && ./scripts/prepare-lib.js",
     "lint": "tslint --project tsconfig.json && kvikk-fix --list-different",
     "lint:fix": "tslint --project tsconfig.json --fix && kvikk-fix",
     "test": "jest",
     "test:coverage": "jest --coverage",
-    "prepublish": "npm run build"
+    "publish": "npm run prepare && npm publish lib"
   },
   "repository": "github:squirly/react-date-context",
   "license": "MIT",
