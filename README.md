@@ -16,7 +16,7 @@
 
 ## Background
 
-Rendering and updating React components that depend on the real time is hard. 
+Rendering and updating React components that depend on the real time is hard.
 Testing React component trees that use `new Date()` directly is even more
 difficult.
 
@@ -41,13 +41,21 @@ This package contains three React components.
 
 ## Maintainers
 
-[@squirly](https://github.com/squirly).
+[@squirly](https://github.com/squirly)
 
 ## Contribute
 
 Feel free to dive in!
 [Open an issue](https://github.com/RichardLitt/standard-readme/issues/new) or
 submit PRs.
+
+### Publishing
+
+To publish,
+
+*   bump the version with `npm version ...`; then
+*   run `git push --tags`; then
+*   publish to npm with `npm prepublish && npm publish lib`.
 
 ## License
 
