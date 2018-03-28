@@ -1,0 +1,3 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`context CurrentDate with no parent throws an error 1`] = `"No parent \\"react-date-context\\" provider. <CurrentDate/> must be nested in <StaticDate/> or <RealDate/>"`;
