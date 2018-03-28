@@ -12,14 +12,14 @@
     "prop-types": "~15"
   },
   "scripts": {
-    "prepare": "npm run build",
     "prebuild": "rm -rf ./lib",
     "build": "tsc && ./scripts/prepare-lib.js",
     "lint": "tslint --project tsconfig.json && kvikk-fix --list-different",
     "lint:fix": "tslint --project tsconfig.json --fix && kvikk-fix",
     "test": "jest",
     "test:coverage": "jest --coverage",
-    "publish": "npm run prepare && npm publish lib"
+    "prepublishOnly": "npm run build",
+    "publish": "npm run prepublishOnly && npm publish lib"
   },
   "devDependencies": {
     "@types/jest": "22.2.2",
