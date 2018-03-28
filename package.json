@@ -1,7 +1,15 @@
 {
   "name": "react-date-context",
+  "author": "Tyler Jones <tyler@squirly.ca>",
   "description": "A set of React components for managing realtime UI updates that depend on the current time.",
   "version": "0.0.1",
+  "repository": "github:squirly/react-date-context",
+  "license": "MIT",
+  "main": "./src/index.ts",
+  "peerDependencies": {
+    "react": "~16",
+    "prop-types": "~15"
+  },
   "scripts": {
     "prepare": "npm run build",
     "prebuild": "rm -rf ./lib",
@@ -12,17 +20,6 @@
     "test:coverage": "jest --coverage",
     "publish": "npm run prepare && npm publish lib"
   },
-  "repository": "github:squirly/react-date-context",
-  "license": "MIT",
-  "main": "./src/index.tsx",
-  "optionalDependencies": {
-    "react": "^16.2.0",
-    "prop-types": "^15.6.1"
-  },
-  "peerDependencies": {
-    "react": "~16",
-    "prop-types": "~15"
-  },
   "devDependencies": {
     "@types/jest": "22.2.2",
     "@types/prop-types": "15.5.2",
@@ -32,6 +29,8 @@
     "jest-junit": "3.6.0",
     "kvikk-fix": "0.0.4",
     "prettier": "1.11.1",
+    "prop-types": "15.6.1",
+    "react": "16.2.0",
     "react-test-renderer": "16.2.0",
     "ts-jest": "22.4.2",
     "tslint": "5.9.1",
