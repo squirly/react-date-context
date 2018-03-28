@@ -1,0 +1,8 @@
+{
+  "name": "react-date-context",
+  "description": "A set of React components for managing realtime UI updates that depend on the current time.",
+  "version": "0.0.1",
+  "scripts": {},
+  "repository": "github:squirly/react-date-context",
+  "license": "MIT"
+}
