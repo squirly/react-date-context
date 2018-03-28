@@ -1,0 +1,17 @@
+{
+  "extends": [
+    "tslint:recommended",
+    "tslint-config-prettier"
+  ],
+  "rules": {
+    "no-non-null-assertion": true,
+    "interface-name": false,
+    "no-namespace": false,
+    "object-literal-sort-keys": false,
+    "max-classes-per-file": false,
+    "no-shadowed-variable": false,
+    "strict-boolean-expressions": true,
+    "member-access": false,
+    "member-ordering": false
+  }
+}

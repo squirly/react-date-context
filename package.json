@@ -2,7 +2,19 @@
   "name": "react-date-context",
   "description": "A set of React components for managing realtime UI updates that depend on the current time.",
   "version": "0.0.1",
-  "scripts": {},
+  "scripts": {
+    "build": "tsc",
+    "lint": "tslint --project tsconfig.json && kvikk-fix --list-different",
+    "lint:fix": "tslint --project tsconfig.json --fix && kvikk-fix"
+  },
   "repository": "github:squirly/react-date-context",
-  "license": "MIT"
+  "license": "MIT",
+  "main": "./src/index.tsx",
+  "devDependencies": {
+    "kvikk-fix": "0.0.4",
+    "prettier": "1.11.1",
+    "tslint": "5.9.1",
+    "tslint-config-prettier": "1.10.0",
+    "typescript": "2.8.1"
+  }
 }
