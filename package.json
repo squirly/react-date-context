@@ -5,7 +5,9 @@
   "scripts": {
     "build": "tsc",
     "lint": "tslint --project tsconfig.json && kvikk-fix --list-different",
-    "lint:fix": "tslint --project tsconfig.json --fix && kvikk-fix"
+    "lint:fix": "tslint --project tsconfig.json --fix && kvikk-fix",
+    "test": "jest",
+    "test:coverage": "jest --coverage"
   },
   "repository": "github:squirly/react-date-context",
   "license": "MIT",
@@ -19,12 +21,33 @@
     "prop-types": "~15"
   },
   "devDependencies": {
+    "@types/jest": "22.2.2",
     "@types/prop-types": "15.5.2",
     "@types/react": "16.1.0",
+    "@types/react-test-renderer": "16.0.1",
+    "jest": "22.4.3",
     "kvikk-fix": "0.0.4",
     "prettier": "1.11.1",
+    "react-test-renderer": "16.2.0",
+    "ts-jest": "22.4.2",
     "tslint": "5.9.1",
     "tslint-config-prettier": "1.10.0",
     "typescript": "2.8.1"
+  },
+  "jest": {
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js"
+    ],
+    "transform": {
+      ".(ts|tsx)": "<rootDir>/node_modules/ts-jest/preprocessor.js"
+    },
+    "testMatch": [
+      "<rootDir>/src/**/*.spec.ts?(x)"
+    ],
+    "collectCoverageFrom": [
+      "src/**/*.ts?(x)"
+    ]
   }
 }
