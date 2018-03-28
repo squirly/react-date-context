@@ -59,7 +59,7 @@ export class RealDate extends React.Component<RealDate.Props, RealDate.State> {
   };
 
   render() {
-    return <StaticDate value={this.state.now} children={this.props.children} />;
+    return <StaticDate date={this.state.now} children={this.props.children} />;
   }
 }
 

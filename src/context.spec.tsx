@@ -19,7 +19,7 @@ describe('context', () => {
       const date = new Date(2017, 1, 1, 12, 0, 0, 0);
 
       create(
-        <StaticDate value={date}>
+        <StaticDate date={date}>
           <CurrentDate>{injectDate}</CurrentDate>
         </StaticDate>,
       );
@@ -32,14 +32,14 @@ describe('context', () => {
         const date2 = new Date(2017, 1, 1, 13, 0, 0, 0);
 
         const renderer = create(
-          <StaticDate value={date1}>
+          <StaticDate date={date1}>
             <CurrentDate children={injectDate} />
           </StaticDate>,
         );
         expect(injectedDate).toBe(date1);
 
         renderer.update(
-          <StaticDate value={date2}>
+          <StaticDate date={date2}>
             <CurrentDate children={injectDate} />
           </StaticDate>,
         );
@@ -67,7 +67,7 @@ describe('context', () => {
       const date = new Date(2017, 1, 1, 12, 0, 0, 0);
 
       const renderer = create(
-        <StaticDate value={date}>
+        <StaticDate date={date}>
           <CurrentDate>{d => <span>{d.toDateString()}</span>}</CurrentDate>
         </StaticDate>,
       );

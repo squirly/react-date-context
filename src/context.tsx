@@ -5,13 +5,14 @@ const {Provider, Consumer} = createContext<Date | undefined>(undefined);
 
 export class StaticDate extends React.Component<StaticDate.Props> {
   render() {
-    return <Provider {...this.props} />;
+    const {date, children} = this.props;
+    return <Provider value={date} children={children} />;
   }
 }
 
 export namespace StaticDate {
   export interface Props {
-    value: Date;
+    date: Date;
   }
 }
 
@@ -37,6 +38,6 @@ export class CurrentDate extends React.Component<CurrentDate.Props> {
 
 export namespace CurrentDate {
   export interface Props {
-    children: (value: Date) => React.ReactNode;
+    children: (date: Date) => React.ReactNode;
   }
 }
