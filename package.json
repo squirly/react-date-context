@@ -29,7 +29,7 @@
     "jest": "22.4.3",
     "jest-junit": "3.6.0",
     "kvikk-fix": "0.0.4",
-    "prettier": "1.11.1",
+    "prettier": "1.12.1",
     "prop-types": "15.6.1",
     "react": "16.2.0",
     "react-test-renderer": "16.2.0",
