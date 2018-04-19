@@ -1,7 +1,6 @@
 import * as React from 'react';
-import {createContext} from './ReactContext';
 
-const {Provider, Consumer} = createContext<Date | undefined>(undefined);
+const {Provider, Consumer} = React.createContext<Date | undefined>(undefined);
 
 export class StaticDate extends React.Component<StaticDate.Props> {
   render() {

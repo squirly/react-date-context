@@ -46,24 +46,6 @@ describe('context', () => {
         expect(injectedDate).toBe(date2);
       });
     });
-
-    it('unsubscribes context on unmount', () => {
-      const date = new Date(2017, 1, 1, 12, 0, 0, 0);
-
-      const renderer = create(
-        <StaticDate date={date}>
-          <CurrentDate>{injectDate}</CurrentDate>
-        </StaticDate>,
-      );
-      const tree = renderer.toTree();
-      if (tree === null || tree.rendered === null) {
-        throw new Error('Error building tree.');
-      }
-      const {instance} = tree.rendered;
-      expect(instance.sub.list).toHaveLength(1);
-      renderer.unmount();
-      expect(instance.sub.list).toHaveLength(0);
-    });
   });
 
   describe('CurrentDate', () => {
