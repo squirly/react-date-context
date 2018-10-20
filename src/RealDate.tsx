@@ -32,10 +32,6 @@ export class RealDate extends React.Component<RealDate.Props, RealDate.State> {
     }
   }
 
-  shouldComponentUpdate(_: RealDate.Props, {now: newNow}: RealDate.State) {
-    return newNow !== this.state.now;
-  }
-
   componentWillUnmount() {
     this.clearInterval();
   }

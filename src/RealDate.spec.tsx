@@ -27,6 +27,14 @@ describe('RealDate', () => {
     );
   });
 
+  it('updates when the children are changed', () => {
+    const renderer = create(<RealDate>hello</RealDate>);
+    expect(renderer.toJSON()).toBe('hello');
+
+    renderer.update(<RealDate>world</RealDate>);
+    expect(renderer.toJSON()).toBe('world');
+  });
+
   describe('with passed time factory', () => {
     let date: Date;
     const timeFactory = () => date;
