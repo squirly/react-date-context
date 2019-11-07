@@ -1,5 +1,6 @@
 # `react-date-context`
 
+[![CircleCI](https://circleci.com/gh/squirly/react-date-context/tree/master.svg?style=svg)](https://circleci.com/gh/squirly/react-date-context/tree/master)
 [![standard-readme compliant](https://img.shields.io/badge/readme%20style-standard-brightgreen.svg?style=flat-square)](https://github.com/RichardLitt/standard-readme)
 
 > A set of React components for managing realtime UI updates that depend on the
