@@ -2,6 +2,11 @@ import * as React from 'react';
 
 const Context = React.createContext<Date | undefined>(undefined);
 
+/**
+ * A React context provider to set the date used.
+ *
+ * @param date the date to use
+ */
 export const StaticDate: React.FunctionComponent<StaticDate.Props> = ({
   date,
   children,
@@ -15,6 +20,9 @@ export namespace StaticDate {
   }
 }
 
+/**
+ * A React context consumer to get the current date.
+ */
 export const CurrentDate: React.FunctionComponent<CurrentDate.Props> = ({
   children,
 }) => <>{children(useCurrentDate())}</>;
@@ -27,6 +35,9 @@ export namespace CurrentDate {
   }
 }
 
+/**
+ * A React hook to get the current date.
+ */
 export function useCurrentDate() {
   const date = React.useContext(Context);
 
@@ -37,6 +48,9 @@ export function useCurrentDate() {
   }
 }
 
+/**
+ * Error thrown when no date is available.
+ */
 export class NoDateContextError extends Error {
   constructor() {
     super(

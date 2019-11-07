@@ -1,6 +1,12 @@
 import * as React from 'react';
 import {StaticDate} from './context';
 
+/**
+ * A React context provider that ensures the latest time is used.
+ *
+ * @param refreshIntervalMs the interval to update the time, defaults to continuously update
+ * @param now a function that returns the current time, defaults to `() => new Date()`
+ */
 export const RealDate: React.FunctionComponent<RealDate.Props> = ({
   refreshIntervalMs,
   now = defaultNow,

@@ -32,13 +32,7 @@ $ npm install react-date-context
 
 ## Usage
 
-This package contains three React components.
-
-### `<RealDate>`
-
-### `<StaticDate>`
-
-### `<CurrentDate>`
+See [doc site](http://squirly.github.io/react-date-context/globals.html).
 
 ## Maintainers
 
@@ -56,8 +50,9 @@ To publish,
 
 *   `git checkout master && git pull --ff-only`; then
 *   bump the version with `npm version ...`; then
-*   run `git push --tags`; then
-*   publish to npm with `npm run publish`.
+*   update and commit docs `npm run docs:generate && git add -f docs && git commit -m 'Update docs'`; then
+*   publish to npm with `npm run publish`; then
+*   run `git push --tags`.
 
 ## License
 
