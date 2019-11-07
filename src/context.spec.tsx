@@ -63,23 +63,17 @@ describe('context', () => {
     });
 
     describe('with no parent', () => {
-      let spy: jest.SpyInstance<() => void>;
-
-      beforeEach(() => {
-        spy = jest.spyOn(console, 'error');
+      it('throws an error', () => {
+        const spy = jest.spyOn(console, 'error');
         spy.mockImplementation(() => {
           /**/
         });
-      });
 
-      afterEach(() => {
-        spy.mockRestore();
-      });
-
-      it('throws an error', () => {
         expect(() =>
           create(<CurrentDate>{injectDate}</CurrentDate>),
         ).toThrowErrorMatchingSnapshot();
+
+        spy.mockRestore();
       });
     });
   });

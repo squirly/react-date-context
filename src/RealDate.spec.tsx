@@ -1,30 +1,12 @@
 import * as React from 'react';
-import {create} from 'react-test-renderer';
-import {CurrentDate, RealDate} from './';
+import {act, create, ReactTestRenderer} from 'react-test-renderer';
+import {RealDate, useCurrentDate} from './';
 
 describe('RealDate', () => {
-  let injectedDate: Date | undefined;
-
-  function injectDate(d: Date): null {
-    injectedDate = d;
-    return null;
-  }
-
-  beforeEach(() => {
-    injectedDate = undefined;
-  });
-
   it('immediately uses the current time', () => {
-    create(
-      <RealDate>
-        <CurrentDate children={injectDate} />
-      </RealDate>,
-    );
+    const renderer = makeRenderer();
 
-    expect(injectedDate === undefined ? 0 : injectedDate.getTime()).toBeCloseTo(
-      new Date().getTime(),
-      -2,
-    );
+    expect(getDate(renderer).getTime()).toBeCloseTo(new Date().getTime(), -2);
   });
 
   it('updates when the children are changed', () => {
@@ -36,38 +18,28 @@ describe('RealDate', () => {
   });
 
   describe('with passed time factory', () => {
-    let date: Date;
-    const timeFactory = () => date;
-
     it('immediately uses the passed time factory', () => {
-      date = new Date(2017, 0, 1, 12, 0, 0, 0);
+      const date = new Date(2017, 0, 1, 12, 0, 0, 0);
+      const timeFactory = () => date;
 
-      create(
-        <RealDate now={timeFactory}>
-          <CurrentDate children={injectDate} />
-        </RealDate>,
-      );
+      const renderer = makeRenderer({now: timeFactory});
 
-      expect(injectedDate).toBe(date);
+      expect(getDate(renderer)).toStrictEqual(date);
     });
 
     it('updates with a new time factory', () => {
-      date = new Date(2017, 0, 2, 12, 0, 0, 0);
+      const date = new Date(2017, 0, 2, 12, 0, 0, 0);
+      const timeFactory = () => date;
+
       const date2 = new Date(2017, 0, 2, 13, 0, 0, 0);
+      const timeFactory2 = () => date2;
 
-      const renderer = create(
-        <RealDate now={timeFactory}>
-          <CurrentDate children={injectDate} />
-        </RealDate>,
-      );
-      expect(injectedDate).toBe(date);
+      const renderer = makeRenderer({now: timeFactory});
+      expect(getDate(renderer)).toStrictEqual(date);
 
-      renderer.update(
-        <RealDate now={() => date2}>
-          <CurrentDate children={injectDate} />
-        </RealDate>,
-      );
-      expect(injectedDate).toBe(date2);
+      updateRenderer(renderer, {now: timeFactory2});
+
+      expect(getDate(renderer)).toStrictEqual(date2);
     });
   });
 
@@ -76,127 +48,137 @@ describe('RealDate', () => {
     afterEach(jest.clearAllTimers);
     afterAll(jest.useRealTimers);
 
-    let date: Date | undefined;
-    const timeFactory = () => {
-      if (date === undefined) {
-        throw new Error('date not set');
-      } else {
-        return date;
-      }
-    };
-
-    beforeEach(() => {
-      date = undefined;
-    });
+    const date1 = new Date(2017, 1, 1, 12, 0, 0, 0);
+    const date2 = new Date(2017, 1, 1, 13, 0, 0, 0);
 
     it('refreshes after elapsed time', () => {
-      const date1 = new Date(2017, 1, 1, 12, 0, 0, 0);
-      const date2 = new Date(2017, 1, 1, 13, 0, 0, 0);
+      let date = date1;
+      const timeFactory = () => date;
 
-      date = date1;
+      const renderer = makeRenderer({now: timeFactory, refreshIntervalMs: 500});
 
-      create(
-        <RealDate now={timeFactory} refreshIntervalMs={500}>
-          <CurrentDate children={injectDate} />
-        </RealDate>,
-      );
-
-      expect(injectedDate).toBe(date1);
+      expect(getDate(renderer)).toStrictEqual(date1);
 
       date = date2;
 
-      jest.advanceTimersByTime(499);
+      advanceTimer(499);
 
-      expect(injectedDate).toBe(date1);
+      expect(getDate(renderer)).toStrictEqual(date1);
 
-      jest.advanceTimersByTime(1);
+      advanceTimer(1);
 
-      expect(injectedDate).toBe(date2);
+      expect(getDate(renderer)).toStrictEqual(date2);
     });
 
     it('updates with new interval', () => {
-      const date1 = new Date(2017, 2, 1, 12, 0, 0, 0);
-      const date2 = new Date(2017, 2, 1, 13, 0, 0, 0);
+      let date = date1;
+      const timeFactory = () => date;
 
-      date = date1;
+      const renderer = makeRenderer({now: timeFactory, refreshIntervalMs: 500});
 
-      const renderer = create(
-        <RealDate now={timeFactory} refreshIntervalMs={500}>
-          <CurrentDate children={injectDate} />
-        </RealDate>,
-      );
-
-      expect(injectedDate).toBe(date1);
+      expect(getDate(renderer)).toStrictEqual(date1);
 
       date = date2;
 
-      jest.advanceTimersByTime(499);
+      advanceTimer(499);
 
-      expect(injectedDate).toBe(date1);
+      expect(getDate(renderer)).toStrictEqual(date1);
 
-      renderer.update(
-        <RealDate now={timeFactory} refreshIntervalMs={1000}>
-          <CurrentDate children={injectDate} />
-        </RealDate>,
-      );
+      updateRenderer(renderer, {now: timeFactory, refreshIntervalMs: 1000});
 
-      expect(injectedDate).toBe(date1);
+      expect(getDate(renderer)).toStrictEqual(date1);
 
-      jest.advanceTimersByTime(999);
+      advanceTimer(999);
 
-      expect(injectedDate).toBe(date1);
+      expect(getDate(renderer)).toStrictEqual(date1);
 
-      jest.advanceTimersByTime(1);
+      advanceTimer(1);
 
-      expect(injectedDate).toBe(date2);
+      expect(getDate(renderer)).toStrictEqual(date2);
     });
 
     it('updates with no interval', () => {
-      const date1 = new Date(2017, 3, 1, 12, 0, 0, 0);
-      const date2 = new Date(2017, 3, 1, 13, 0, 0, 0);
+      let date = date1;
+      const timeFactory = () => date;
 
-      date = date1;
+      const renderer = makeRenderer({now: timeFactory, refreshIntervalMs: 500});
 
-      const renderer = create(
-        <RealDate now={timeFactory} refreshIntervalMs={500}>
-          <CurrentDate children={injectDate} />
-        </RealDate>,
-      );
-
-      expect(injectedDate).toBe(date1);
+      expect(getDate(renderer)).toStrictEqual(date1);
 
       date = date2;
 
-      jest.advanceTimersByTime(499);
+      advanceTimer(499);
 
-      expect(injectedDate).toBe(date1);
+      expect(getDate(renderer)).toStrictEqual(date1);
 
-      renderer.update(
-        <RealDate now={timeFactory}>
-          <CurrentDate children={injectDate} />
-        </RealDate>,
-      );
+      updateRenderer(renderer, {now: timeFactory});
 
-      expect(injectedDate).toBe(date1);
+      expect(getDate(renderer)).toStrictEqual(date1);
 
-      jest.runAllTimers();
+      runPendingTimers();
 
-      expect(injectedDate).toBe(date1);
+      expect(getDate(renderer)).toStrictEqual(date2);
     });
 
     it('clears interval on unmount', () => {
-      date = new Date(2017, 1, 4, 12, 0, 0, 0);
+      const date = new Date(2017, 1, 4, 12, 0, 0, 0);
+      const timeFactory = () => date;
 
-      const renderer = create(
-        <RealDate now={timeFactory} refreshIntervalMs={500}>
-          <CurrentDate children={injectDate} />
-        </RealDate>,
-      );
+      const renderer = makeRenderer({now: timeFactory, refreshIntervalMs: 500});
 
-      const instance = (renderer.getInstance() as any) as RealDate;
-      expect(instance.interval).not.toBeUndefined();
+      expect(jest.getTimerCount()).not.toBe(0);
       renderer.unmount();
-      expect(instance.interval).toBeUndefined();
+      expect(jest.getTimerCount()).toBe(0);
     });
   });
 });
+
+function makeRenderer(props: RealDate.Props = {}): ReactTestRenderer {
+  let renderer: ReactTestRenderer | undefined = undefined; // tslint:disable-line:no-unnecessary-initializer
+
+  act(() => {
+    renderer = create(makeComponent(props));
+  });
+
+  return renderer!; // tslint:disable-line:no-non-null-assertion
+}
+
+function updateRenderer(
+  renderer: ReactTestRenderer,
+  props: RealDate.Props = {},
+): void {
+  act(() => {
+    renderer.update(makeComponent(props));
+  });
+}
+
+function makeComponent(
+  props: RealDate.Props = {},
+): React.ReactElement<RealDate.Props> {
+  return (
+    <RealDate {...props}>
+      <DisplayCurrentDate />
+    </RealDate>
+  );
+}
+
+const DisplayCurrentDate: React.FunctionComponent = () => {
+  return <>{useCurrentDate().toISOString()}</>;
+};
+
+function getDate(renderer: ReactTestRenderer): Date {
+  return new Date(renderer.root.findByType(DisplayCurrentDate)
+    .children[0] as string);
+}
+
+function advanceTimer(ms: number): void {
+  act(() => {
+    jest.advanceTimersByTime(ms);
+  });
+}
+
+function runPendingTimers(): void {
+  act(() => {
+    jest.runOnlyPendingTimers();
+  });
+}

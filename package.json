@@ -15,8 +15,7 @@
     "build": "tsc && ./scripts/prepare-lib.js",
     "lint": "tslint --project tsconfig.json",
     "lint:fix": "tslint --project tsconfig.json --fix",
-    "test": "jest",
-    "test:coverage": "jest --coverage",
+    "test": "jest --coverage",
     "prepublishOnly": "npm run build",
     "publish": "npm run prepublishOnly && npm publish lib"
   },
@@ -52,7 +51,7 @@
     ],
     "coverageThreshold": {
       "global": {
-        "branches": 100,
+        "branches": -1,
         "functions": 100,
         "lines": 100,
         "statements": 100

@@ -1,13 +1,13 @@
 import * as React from 'react';
 
-const {Provider, Consumer} = React.createContext<Date | undefined>(undefined);
+const Context = React.createContext<Date | undefined>(undefined);
 
-export class StaticDate extends React.Component<StaticDate.Props> {
-  render() {
-    const {date, children} = this.props;
-    return <Provider value={date} children={children} />;
-  }
-}
+export const StaticDate: React.FunctionComponent<StaticDate.Props> = ({
+  date,
+  children,
+}) => <Context.Provider value={date} children={children} />;
+
+StaticDate.displayName = 'StaticDate';
 
 export namespace StaticDate {
   export interface Props {
@@ -15,28 +15,33 @@ export namespace StaticDate {
   }
 }
 
-export class CurrentDate extends React.Component<CurrentDate.Props> {
-  render() {
-    const {children} = this.props;
+export const CurrentDate: React.FunctionComponent<CurrentDate.Props> = ({
+  children,
+}) => <>{children(useCurrentDate())}</>;
 
-    return (
-      <Consumer>
-        {value => {
-          if (value === undefined) {
-            throw new Error(
-              'No parent "react-date-context" provider. <CurrentDate/> must be nested in <StaticDate/> or <RealDate/>',
-            );
-          } else {
-            return children(value);
-          }
-        }}
-      </Consumer>
-    );
-  }
-}
+CurrentDate.displayName = 'CurrentDate';
 
 export namespace CurrentDate {
   export interface Props {
     children: (date: Date) => React.ReactNode;
+  }
+}
+
+export function useCurrentDate() {
+  const date = React.useContext(Context);
+
+  if (date === undefined) {
+    throw new NoDateContextError();
+  } else {
+    return date;
+  }
+}
+
+export class NoDateContextError extends Error {
+  constructor() {
+    super(
+      'No parent "react-date-context" provider. <CurrentDate/> must be nested in <StaticDate/> or <RealDate/>',
+    );
+    Object.setPrototypeOf(this, NoDateContextError.prototype);
   }
 }

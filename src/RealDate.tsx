@@ -1,71 +1,37 @@
 import * as React from 'react';
 import {StaticDate} from './context';
 
-export class RealDate extends React.Component<RealDate.Props, RealDate.State> {
-  private get now(): Date {
-    const {now} = this.props;
-    return now === undefined ? new Date() : now();
-  }
+export const RealDate: React.FunctionComponent<RealDate.Props> = ({
+  refreshIntervalMs,
+  now = defaultNow,
+  children,
+}) => {
+  const [date, setDate] = React.useState(now);
 
-  state = {
-    now: this.now,
-  };
+  React.useEffect(() => {
+    setDate(now());
+  }, [now, setDate]);
 
-  interval?: number;
+  React.useEffect(() => {
+    const interval = setInterval(() => {
+      setDate(now());
+    }, refreshIntervalMs);
 
-  componentDidMount() {
-    this.setInterval(this.props.refreshIntervalMs);
-  }
+    return () => {
+      clearInterval(interval);
+    };
+  }, [refreshIntervalMs, now, setDate]);
 
-  componentWillReceiveProps({
-    now: newNow,
-    refreshIntervalMs: newRefreshIntervalMs,
-  }: RealDate.Props) {
-    const {now, refreshIntervalMs} = this.props;
-
-    if (newNow !== undefined && newNow !== now) {
-      this.setState({now: newNow()});
-    }
-
-    if (newRefreshIntervalMs !== refreshIntervalMs) {
-      this.setInterval(newRefreshIntervalMs);
-    }
-  }
-
-  componentWillUnmount() {
-    this.clearInterval();
-  }
-
-  private setInterval(refreshIntervalMs?: number): void {
-    this.clearInterval();
-    if (refreshIntervalMs !== undefined) {
-      this.interval = window.setInterval(this.updateTime, refreshIntervalMs);
-    }
-  }
-
-  private clearInterval(): void {
-    if (this.interval !== undefined) {
-      window.clearInterval(this.interval);
-      this.interval = undefined;
-    }
-  }
-
-  private updateTime = (): void => {
-    this.setState({now: this.now});
-  };
-
-  render() {
-    return <StaticDate date={this.state.now} children={this.props.children} />;
-  }
-}
+  return <StaticDate date={date} children={children} />;
+};
 
 export namespace RealDate {
   export interface Props {
     now?: () => Date;
     refreshIntervalMs?: number;
   }
+}
 
-  export interface State {
-    now: Date;
-  }
+function defaultNow(): Date {
+  return new Date();
 }

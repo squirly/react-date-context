@@ -1,2 +1,7 @@
-export {CurrentDate, StaticDate} from './context';
+export {
+  CurrentDate,
+  StaticDate,
+  useCurrentDate,
+  NoDateContextError,
+} from './context';
 export {RealDate} from './RealDate';
